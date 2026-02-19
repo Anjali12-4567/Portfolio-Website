@@ -317,3 +317,48 @@ input,textarea{
   .buttons{ flex-direction:column; width:100%; gap:8px; }
   .btn{ width:100%; text-align:center; }
 }
+
+/* Custom cursor follower (colorful circle) */
+#cursor-follower{
+  position:fixed;
+  left:0;
+  top:0;
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  pointer-events:none;
+  transform: translate(-50%,-50%) scale(1);
+  transition: background-color .18s linear, transform .18s cubic-bezier(.2,.9,.3,1), opacity .18s;
+  z-index:9999;
+  mix-blend-mode:screen;
+  filter: drop-shadow(0 6px 18px rgba(0,0,0,0.45));
+  background: rgba(56,189,248,0.95);
+  opacity:0.95;
+}
+.cursor--large{ transform: translate(-50%,-50%) scale(2.6); opacity:1; }
+
+/* Glow / lighting behind interactive elements */
+.cards .card::after,
+.skill-badges .badge::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:120%;
+  height:120%;
+  border-radius:18px;
+  background: var(--glow-color, rgba(255,255,255,0.06));
+  filter: blur(22px) saturate(120%);
+  opacity:0;
+  transition: opacity .25s ease, transform .25s ease;
+  pointer-events:none;
+  z-index:0;
+}
+.cards .card:hover::after{ opacity:0.98; transform: translate(-50%,-50%) scale(1.05); }
+.skill-badges .badge::after{ border-radius:999px; width:220%; height:220%; }
+.skill-badges .badge:hover::after{ opacity:0.9; transform: translate(-50%,-50%) scale(1); }
+
+/* Ensure card content sits above glow */
+.cards .card > *{ position:relative; z-index:1; }
+.skill-badges .badge{ position:relative; z-index:1; }
