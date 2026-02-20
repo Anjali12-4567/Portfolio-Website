@@ -63,7 +63,11 @@ document.addEventListener('DOMContentLoaded', ()=>{
   let posX = mouseX, posY = mouseY;
   const ease = 0.18;
 
-  const cardColors = ['#06b6d4','#7c3aed','#f97316','#22c55e','#ef4444','#0ea5a4'];
+  // five light/pastel colors (exclude dark and white)
+  const cardColors = ['#c7f9ff', '#e9d5ff', '#ffedd5', '#d1fae5', '#fee2e2'];
+
+  // default CSS variable for cursor ring color
+  follower.style.setProperty('--cursor-color', 'rgba(56,189,248,0.18)');
 
   function hexToRgba(hex, a){
     if(!hex) return `rgba(56,189,248,${a})`;
@@ -113,7 +117,9 @@ document.addEventListener('DOMContentLoaded', ()=>{
       const idx = cards.indexOf(card);
       const color = cardColors[idx % cardColors.length] || '#38bdf8';
       const glow = hexToRgba(color, 0.22);
-      follower.style.background = hexToRgba(color, 0.95);
+      // subtle fill + set variable for ring/shadow
+      follower.style.background = hexToRgba(color, 0.14);
+      follower.style.setProperty('--cursor-color', hexToRgba(color, 0.22));
       follower.classList.add('cursor--large');
       card.style.setProperty('--glow-color', glow);
       lastEl = card;
@@ -124,6 +130,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
       const cs = getComputedStyle(badge);
       const color = cs.color || '#9be7ff';
       follower.style.background = color;
+      follower.style.setProperty('--cursor-color', color);
       follower.classList.add('cursor--large');
       badge.style.setProperty('--glow-color', color);
       lastEl = badge;
@@ -134,13 +141,15 @@ document.addEventListener('DOMContentLoaded', ()=>{
       const cs = getComputedStyle(link);
       const color = cs.color || '#ffffff';
       follower.style.background = color;
+      follower.style.setProperty('--cursor-color', color);
       follower.classList.add('cursor--large');
       lastEl = link;
       return;
     }
 
     // default small accent
-    follower.style.background = 'rgba(56,189,248,0.95)';
+    follower.style.background = 'rgba(56,189,248,0.14)';
+    follower.style.setProperty('--cursor-color', 'rgba(56,189,248,0.22)');
     follower.classList.remove('cursor--large');
     lastEl = null;
   }
@@ -149,7 +158,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
     // If leaving the last focused element, reset
     if(!lastEl) return;
     if(el === lastEl || (el && el.contains && el.contains(lastEl))){
-      follower.style.background = 'rgba(56,189,248,0.95)';
+      follower.style.background = 'rgba(56,189,248,0.14)';
+      follower.style.setProperty('--cursor-color', 'rgba(56,189,248,0.22)');
       follower.classList.remove('cursor--large');
       if(lastEl.style) lastEl.style.removeProperty('--glow-color');
       lastEl = null;
